@@ -7,6 +7,8 @@
 
 An end-to-end machine learning pipeline that classifies 10,500 AI-related news headlines across a custom 12-category behavioral taxonomy, compares classical and transformer-based NLP models, analyzes cross-LLM behavioral patterns, and links NLP-derived signals to equity market dynamics.
 
+**Key areas:** Multi-Label Text Classification · Feature Engineering · NLP · Deep Learning · Statistical Modeling · Quantitative Finance
+
 ---
 
 ## 🔬 Pipeline (11 Stages)
@@ -15,7 +17,7 @@ An end-to-end machine learning pipeline that classifies 10,500 AI-related news h
 |---|---|
 | 1 | Environment Setup & Reproducibility |
 | 2 | Data Loading & Exploratory Analysis |
-| 3 | Text Preprocessing & Label Handling |
+| 3 | Text Preprocessing & Feature Engineering |
 | 4 | Multi-Hot Encoding & Iterative Stratified Splitting |
 | 5 | Baseline Model: TF-IDF + Logistic Regression |
 | 6 | Deep Learning: DistilBERT Fine-Tuning |
@@ -30,12 +32,12 @@ An end-to-end machine learning pipeline that classifies 10,500 AI-related news h
 ## 🤖 Models & Methods
 
 ### TF-IDF + Logistic Regression (Baseline)
-- TF-IDF vectorization with bigram features (`ngram_range=(1,2)`, `max_features=60,000`)
+- Feature engineering: TF-IDF vectorization with bigram features (`ngram_range=(1,2)`, `max_features=60,000`)
 - OneVsRest Logistic Regression with `class_weight=balanced`, `solver=liblinear`
-- Multi-hot label encoding with iterative stratification for balanced splits
+- Multi-hot label encoding with iterative stratification for balanced train/val/test splits
 - **Macro-F1: 0.9331 · Micro-F1: 0.9430**
 
-### DistilBERT (Fine-Tuned)
+### DistilBERT (Fine-Tuned Transformer)
 - Model: `distilbert-base-uncased`
 - Optimizer: AdamW · Loss: BCEWithLogitsLoss · Epochs: 3
 - Custom `MultiLabelDataset` class with PyTorch DataLoader
@@ -43,7 +45,7 @@ An end-to-end machine learning pipeline that classifies 10,500 AI-related news h
 - **Macro-F1: 0.8862**
 
 ### Key Finding
-> TF-IDF outperformed DistilBERT by ~4.69 Macro-F1 points. Short headline length (avg. 10–15 tokens) limits transformer contextual advantage — classical sparse features captured discriminative vocabulary more effectively at this scale.
+> TF-IDF outperformed DistilBERT by ~4.69 Macro-F1 points. Short headline length (avg. 10–15 tokens) limits transformer contextual advantage — classical sparse features captured discriminative vocabulary more effectively at this scale, at 6–12x lower compute cost.
 
 ---
 
@@ -74,18 +76,21 @@ Linked NLP-derived behavioral signals to equity market dynamics across **NVDA, G
 | Category | Tools |
 |---|---|
 | Language | Python |
-| Deep Learning | PyTorch · Transformers |
-| ML / NLP | scikit-learn · NLTK · iterative-stratification |
-| Statistical Analysis | scipy · statsmodels · arch |
+| Environment | Google Colab |
+| Deep Learning | PyTorch · Transformers (`distilbert-base-uncased`) |
+| ML / Text Classification | scikit-learn · iterative-stratification |
+| NLP | NLTK · TF-IDF · NMF |
+| Feature Engineering | n-gram extraction · multi-hot encoding · bigram vectorization |
+| Statistical Modeling | scipy · statsmodels · arch |
+| Time Series | GARCH · Granger causality · ADF test |
 | Data | pandas · NumPy |
 | Visualization | matplotlib · seaborn |
-| Environment | Google Colab |
 
 ---
 
 ## 🚀 Getting Started
 
-1. Open `RAISE26_Synaptic_Sparks_copy.ipynb` in Google Colab
+1. Open `RAISE26_Synaptic_Sparks_copy.ipynb` in **Google Colab**
 2. Install dependencies:
 ```python
 pip install pandas numpy matplotlib seaborn nltk scikit-learn transformers torch accelerate iterative-stratification yfinance arch
