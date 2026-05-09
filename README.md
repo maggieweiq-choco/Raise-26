@@ -1,28 +1,15 @@
-# 🥈 RAISE-26 · Synaptic Sparks
-### 2nd Place · RAISE-26 AI-NLP Informatics Competition · Rutgers University (Bloustein School, MPI Program)
-
-> **"Mirror, Mirror on the Wall, Is AI Transforming Us All?"**  
-> An end-to-end NLP classification pipeline and quantitative signal analysis investigating how AI news frames human behavioral impact.
+# Multi-Label NLP Pipeline & Quantitative Signal Analysis
+### 🥈 2nd Place · RAISE-26 AI-NLP Informatics Competition · Rutgers University
 
 ---
 
-## 🏆 Competition
-| | |
-|---|---|
-| **Competition** | RAISE-26 AI-NLP Informatics Competition |
-| **Host** | Rutgers University, Bloustein School MPI Program |
-| **Result** | 🥈 2nd Place · Final Round (17 teams, selected from 180+ initial participants) |
-| **Team** | Synaptic Sparks — Ziqi Wei · Junemo Moon · Keqi Zhang |
+## 📌 Overview
+
+An end-to-end machine learning pipeline that classifies 10,500 AI-related news headlines across a custom 12-category behavioral taxonomy, compares classical and transformer-based NLP models, analyzes cross-LLM behavioral patterns, and links NLP-derived signals to equity market dynamics.
 
 ---
 
-## 📌 Project Overview
-
-This project builds a multi-label text classification system on 10,500 AI-related news headlines annotated across a custom 12-category behavioral taxonomy. We compare a classical NLP baseline against a fine-tuned transformer model, extend the analysis to cross-LLM behavioral comparison, and integrate a quantitative finance layer linking news signals to equity market dynamics.
-
----
-
-## 🔬 Pipeline Overview (11 Stages)
+## 🔬 Pipeline (11 Stages)
 
 | Stage | Description |
 |---|---|
@@ -31,35 +18,54 @@ This project builds a multi-label text classification system on 10,500 AI-relate
 | 3 | Text Preprocessing & Label Handling |
 | 4 | Multi-Hot Encoding & Iterative Stratified Splitting |
 | 5 | Baseline Model: TF-IDF + Logistic Regression |
-| 6 | Deep Learning Model: DistilBERT Fine-Tuning |
+| 6 | Deep Learning: DistilBERT Fine-Tuning |
 | 7 | Model Evaluation & Comparison |
 | 8 | Interpretability Analysis |
 | 9 | Topic Modeling (NMF) |
-| 10 | Cross-LLM Behavioral Analysis (Dataset C) |
+| 10 | Cross-LLM Behavioral Analysis |
 | 11 | Quantitative Financial Analysis |
 
 ---
 
-## 📊 Key Results
+## 🤖 Models & Methods
 
-### Model Comparison
-| Model | Macro-F1 | Micro-F1 |
-|---|---|---|
-| TF-IDF + Logistic Regression | **0.9331** | 0.9430 |
-| DistilBERT (`distilbert-base-uncased`) | 0.8862 | ~0.9400 |
+### TF-IDF + Logistic Regression (Baseline)
+- TF-IDF vectorization with bigram features (`ngram_range=(1,2)`, `max_features=60,000`)
+- OneVsRest Logistic Regression with `class_weight=balanced`, `solver=liblinear`
+- Multi-hot label encoding with iterative stratification for balanced splits
+- **Macro-F1: 0.9331 · Micro-F1: 0.9430**
 
-> The classical baseline outperformed DistilBERT by ~4.69 Macro-F1 points. News headlines average only 10–15 tokens, limiting the contextual advantage of transformer-based models. DistilBERT was fine-tuned with AdamW optimizer, BCEWithLogitsLoss, over 3 epochs.
+### DistilBERT (Fine-Tuned)
+- Model: `distilbert-base-uncased`
+- Optimizer: AdamW · Loss: BCEWithLogitsLoss · Epochs: 3
+- Custom `MultiLabelDataset` class with PyTorch DataLoader
+- Dropout regularization (p=0.3) on CLS representation
+- **Macro-F1: 0.8862**
 
-### Cross-LLM Behavioral Analysis (Mistral · Qwen · Llama)
-- Dataset C was competition-provided; generation parameters were not controlled by the team
+### Key Finding
+> TF-IDF outperformed DistilBERT by ~4.69 Macro-F1 points. Short headline length (avg. 10–15 tokens) limits transformer contextual advantage — classical sparse features captured discriminative vocabulary more effectively at this scale.
+
+---
+
+## 🔀 Cross-LLM Behavioral Analysis
+
+Compared label distributions across outputs from **Mistral, Qwen, and Llama** using the trained classifier.
+
 - Chi-square test: χ²=74.21, p=1.41×10⁻⁷
-- Cramér's V = 0.065 — statistically significant, but small practical effect size
-- **Finding:** All three LLMs show highly convergent behavioral framing of AI's societal impact, with only minor distributional differences across the 12 behavioral categories
+- Cramér's V = 0.065 — statistically significant, small practical effect
+- Jensen-Shannon divergence for pairwise similarity measurement
+- **Finding:** All three LLMs converge on similar behavioral framing of AI's societal impact despite architectural differences
 
-### Quantitative Finance (Stage 11)
-- GARCH(1,1) volatility modeling across NVDA, GOOGL, MSFT, META
-- Granger causality testing between NLP-derived behavioral signals and equity returns
-- Pearson/Spearman correlation analysis between news label proportions and market volatility
+---
+
+## 📈 Quantitative Financial Analysis
+
+Linked NLP-derived behavioral signals to equity market dynamics across **NVDA, GOOGL, MSFT, META**.
+
+- **GARCH(1,1)** volatility modeling — annualized conditional volatility estimates
+- **Granger causality testing** — whether news behavioral signals predict market volatility
+- **Pearson/Spearman correlation** — news label proportions vs. market returns
+- **ADF stationarity testing** for time series preprocessing
 
 ---
 
@@ -68,7 +74,7 @@ This project builds a multi-label text classification system on 10,500 AI-relate
 | Category | Tools |
 |---|---|
 | Language | Python |
-| Deep Learning | PyTorch · Transformers (`distilbert-base-uncased`) |
+| Deep Learning | PyTorch · Transformers |
 | ML / NLP | scikit-learn · NLTK · iterative-stratification |
 | Statistical Analysis | scipy · statsmodels · arch |
 | Data | pandas · NumPy |
@@ -77,47 +83,24 @@ This project builds a multi-label text classification system on 10,500 AI-relate
 
 ---
 
-## 📁 Repository Structure
-
-```
-RAISE26-Synaptic-Sparks/
-│
-├── RAISE26_Synaptic_Sparks_copy.ipynb   # Main pipeline (final submission)
-├── README.md
-│
-└── docs/
-    ├── RAISE-26_Competition_Guidelines.docx
-    └── RAISE-26_Helpful_Resources.docx
-```
-
-> **Note:** Datasets are not included in this repository as they are competition-provided and not for public distribution.
-
----
-
 ## 🚀 Getting Started
 
-This notebook is designed to run on **Google Colab**.
-
 1. Open `RAISE26_Synaptic_Sparks_copy.ipynb` in Google Colab
-2. Run the environment setup cell to install all dependencies:
+2. Install dependencies:
 ```python
 pip install pandas numpy matplotlib seaborn nltk scikit-learn transformers torch accelerate iterative-stratification yfinance arch
 ```
-3. Upload the required dataset files when prompted
+3. Upload dataset files when prompted
 4. Run all cells sequentially
+
+> **Note:** Datasets are not included as they are competition-provided and not for public distribution.
 
 ---
 
-## 👥 Team
+## 👥 Team · Synaptic Sparks
 
 | Name | GitHub |
 |---|---|
 | Ziqi Wei (Maggie) | [@maggieweiq-choco](https://github.com/maggieweiq-choco) |
 | Keqi Zhang | [@KiraZhang-Keqi](https://github.com/KiraZhang-Keqi) |
 | Junemo Moon | [@Junemo-hub](https://github.com/Junemo-hub) |
-
----
-
-## 🔗 Links
-- [RAISE-26 Competition Page](https://raise26.devpost.com/)
-- [Rutgers MPI Program](https://bloustein.rutgers.edu/graduate/public-informatics/)
