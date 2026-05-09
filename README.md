@@ -11,7 +11,7 @@
 |---|---|
 | **Competition** | RAISE-26 AI-NLP Informatics Competition |
 | **Host** | Rutgers University, Bloustein School MPI Program |
-| **Result** | 🥈 2nd Place (17 teams, including 7 graduate-level teams) |
+| **Result** | 🥈 2nd Place · Final Round (17 teams, selected from 180+ initial participants) |
 | **Team** | Synaptic Sparks — Ziqi Wei · Junemo Moon · Keqi Zhang |
 
 ---
