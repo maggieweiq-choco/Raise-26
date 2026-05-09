@@ -92,7 +92,7 @@ This project investigates how AI-related news media frames human behavioral impa
 
 ## 🚀 Getting Started
 
-1. Open `RAISE26_Synaptic_Sparks_copy.ipynb` in **Google Colab**
+1. Open `RAISE26_Synaptic_Sparks .ipynb` in **Google Colab**
 2. Install dependencies:
 ```python
 pip install pandas numpy matplotlib seaborn nltk scikit-learn transformers torch accelerate iterative-stratification yfinance arch
